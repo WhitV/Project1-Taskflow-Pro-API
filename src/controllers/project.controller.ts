@@ -17,7 +17,7 @@ export const createProject: RequestHandler = async (req: any, res: Response) => 
 
         const projectId = newProject.rows[0].id;
         await pool.query(
-            'INSERT INTO project_members (project_id, user_id,) VALUES ($1, $2)',
+            'INSERT INTO project_members (project_id, user_id) VALUES ($1, $2)',
             [projectId, ownerId] 
         );
 
@@ -53,7 +53,8 @@ export const addMemberToProject: RequestHandler = async (req: any, res: Response
       res.status(404).json({ message: 'Project not found' });
       return;
     }
-    if (projectResult.rows[0].owner_id.toString() !== inviterId) {
+
+    if (projectResult.rows[0].owner_id !== inviterId) {
       res.status(403).json({ message: 'Forbidden: Only the project owner can add members' });
       return;
     }
@@ -64,10 +65,10 @@ export const addMemberToProject: RequestHandler = async (req: any, res: Response
       return;
     }
     const inviteeId = userToInviteResult.rows[0].id;
-
+    
     await pool.query(
-      'INSERT INTO project_members (project_id, user_id) VALUES ($1, $2)',
-      [projectId, inviteeId]
+    'INSERT INTO project_members (project_id, user_id) VALUES ($1, $2)',
+    [projectId, inviteeId]
     );
 
     res.status(201).json({ message: 'Member added successfully' });
