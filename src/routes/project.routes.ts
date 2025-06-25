@@ -8,6 +8,6 @@ const router = Router();
 router.post('/', authMiddleware, createProject);
 router.get('/', authMiddleware, getProjects);
 router.post('/:id/members', authMiddleware, addMemberToProject);
-router.use('/:projectId/boards', boardRoutes);
+router.use('/:projectId/boards', authMiddleware, boardRoutes);
 
 export default router;
