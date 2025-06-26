@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createBoard } from '../controllers/board.controller';
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.post('/', createBoard);
 
